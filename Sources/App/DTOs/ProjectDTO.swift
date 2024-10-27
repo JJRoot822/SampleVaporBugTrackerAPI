@@ -9,7 +9,6 @@ struct ProjectDTO: Content {
     var bugs: [BugReport]?
     
     func toModel() -> Project {
-        print(name == nil)
         let project = Project()
         project.id = self.id
         
