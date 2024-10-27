@@ -9,11 +9,16 @@ struct ProjectDTO: Content {
     var bugs: [BugReport]?
     
     func toModel() -> Project {
+        print(name == nil)
         let project = Project()
         project.id = self.id
-        project.bugReports = self.bugs ?? []
-        if let name = self.name {
-            project.projectName = name
+        
+        if let projectName = self.name {
+            project.projectName = projectName
+        }
+        
+        if let isBeingMaintained = self.isClosed {
+            project.isBeingMaintained = isBeingMaintained
         }
         
         return project

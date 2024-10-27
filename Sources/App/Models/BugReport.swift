@@ -10,7 +10,6 @@ final class BugReport: Model, @unchecked Sendable {
     
     @Field(key: "title")
     var reportTitle: String
-JJRoot822
     @Field(key: "details")
     var reportDetails: String
     

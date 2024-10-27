@@ -31,11 +31,14 @@ struct ProjectController: RouteCollection {
     }
     
     @Sendable
-    func create(req: Request) async throws -> ProjectDTO {
+    func create(req: Request) async throws -> HTTPStatus {
+        print(req.content.contentType)
+        
         let project = try req.content.decode(ProjectDTO.self).toModel()
         
         try await project.save(on: req.db)
-        return project.toDTO()
+        
+        return .created
     }
 
     @Sendable

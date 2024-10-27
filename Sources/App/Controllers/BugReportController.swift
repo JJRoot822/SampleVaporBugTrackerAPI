@@ -29,7 +29,7 @@ struct BugReportController: RouteCollection {
     }
     
     @Sendable
-    func create(req: Request) async throws -> BugReportDTO {
+    func create(req: Request) async throws -> HTTPStatus {
         let bugReportDTO = try req.content.decode(BugReportDTO.self)
         
         guard let project = try await Project.find(bugReportDTO.projectId, on: req.db) else {
@@ -43,7 +43,8 @@ struct BugReportController: RouteCollection {
         bugReport.project = project
         
         try await bugReport.save(on: req.db)
-        return bugReportDTO
+        
+        return .created
     }
 
     @Sendable
