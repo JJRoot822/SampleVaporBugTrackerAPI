@@ -6,7 +6,7 @@ struct ProjectDTO: Content {
     var id: UUID?
     var name: String?
     var isClosed: Bool?
-    var bugs: [BugReport]?
+    var bugs: [BugReportDTO]?
     
     func toModel() -> Project {
         let project = Project()
@@ -16,8 +16,8 @@ struct ProjectDTO: Content {
             project.projectName = projectName
         }
         
-        if let isBeingMaintained = self.isClosed {
-            project.isBeingMaintained = isBeingMaintained
+        if let isClosed = self.isClosed {
+            project.isClosed = isClosed
         }
         
         return project

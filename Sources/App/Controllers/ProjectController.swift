@@ -52,13 +52,14 @@ struct ProjectController: RouteCollection {
     @Sendable
     func updateProjectStatus(req: Request) async throws -> HTTPStatus {
         guard let project = try await Project.find(req.parameters.get("projectId"), on: req.db) else {
+            print("Project not found with the id of \(req.parameters.get("projectId")!)")
             throw Abort(.notFound)
         }
 
         let patchData: PatchProjectDTO? = try? req.content.decode(PatchProjectDTO.self)
 
-        if let isMaintained = patchData?.isBeingMaintained {
-            project.isBeingMaintained = isMaintained
+        if let isClosed = patchData?.isClosed {
+            project.isClosed = isClosed
         }
 
         try await project.save(on: req.db)
@@ -75,7 +76,7 @@ struct ProjectController: RouteCollection {
         let updatedProjectData = try req.content.decode(ProjectDTO.self)
         
         project.projectName = updatedProjectData.name ?? project.projectName
-        project.isBeingMaintained = updatedProjectData.isClosed ?? project.isBeingMaintained
+        project.isClosed = updatedProjectData.isClosed ?? project.isClosed
         
         try await project.save(on: req.db)
 

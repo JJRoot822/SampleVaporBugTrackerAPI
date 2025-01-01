@@ -6,7 +6,7 @@ struct CreateProjectTable: AsyncMigration {
         try await database.schema("Projects")
             .id()
             .field("name", .string, .required)
-            .field("maintained",.bool, .required)
+            .field("closed",.bool, .required)
             .create()
     }
 

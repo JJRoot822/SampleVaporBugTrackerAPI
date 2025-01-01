@@ -11,21 +11,25 @@ final class Project: Model, @unchecked Sendable {
     @Field(key: "name")
     var projectName: String
     
-    @Field(key: "maintained")
-    var isBeingMaintained: Bool
+    @Field(key: "closed")
+    var isClosed: Bool
 
     @Children(for: \..$project)
     var bugReports: [BugReport]
     
     init() {}
     
-    init(id: UUID? = nil, projectName: String, isBeingMaintained: Bool) {
+    init(id: UUID? = nil, projectName: String, isClosed: Bool) {
         self.id = id
         self.projectName = projectName
-        self.isBeingMaintained = isBeingMaintained
+        self.isClosed = isClosed
     }
     
     func toDTO() -> ProjectDTO {
-        return ProjectDTO(id: self.$id.value, name: self.$projectName.value, isClosed: self.$isBeingMaintained.value, bugs: self.$bugReports.value)
+        let bugReports: [BugReportDTO]? = self.$bugReports.value?.map { report in
+            return report.toDTO()
+        }
+        
+        return ProjectDTO(id: self.$id.value, name: self.$projectName.value, isClosed: self.$isClosed.value, bugs: bugReports)
     }
 }
