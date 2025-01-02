@@ -32,9 +32,11 @@ struct BugReportController: RouteCollection {
     func create(req: Request) async throws -> HTTPStatus {
         let bugReportDTO = try req.content.decode(BugReportDTO.self)
         
+        let project = try await Project.find(bugReportDTO.projectId, on: req.db)
         let bugReport = bugReportDTO.toModel()
+        try await project?.$bugReports.create(bugReport, on: req.db)
         
-        try await bugReport.save(on: req.db)
+        try await project?.save(on: req.db)
         
         return .created
     }

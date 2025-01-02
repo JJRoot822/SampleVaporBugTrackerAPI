@@ -25,7 +25,6 @@ struct BugReportDTO: Content {
             bugReport.reportType = type
         }
         
-        
         return bugReport
     }
 }
